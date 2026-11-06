@@ -2,13 +2,13 @@
 
 A Machine Learning project developed using Python and XGBoost to forecast store sales as part of the **Store Sales – Time Series Forecasting** competition on Kaggle.
 
-The project explores the complete workflow of a Machine Learning competition, from data exploration and feature engineering to model optimization and prediction generation.
+The project explores the end-to-end workflow of a Machine Learning competition, from data exploration and feature engineering to model optimization and competition submission.
 
 ## Project Overview
 
 The objective is to predict daily sales for different product families across multiple stores using historical sales data and additional information such as promotions, store characteristics, holidays, and oil prices.
 
-This project focuses on understanding time-dependent patterns, engineering meaningful features, and evaluating their impact on forecasting performance.
+The project focuses on understanding time-dependent patterns, engineering meaningful features, and evaluating their impact on forecasting performance.
 
 ## Competition & Dataset
 
@@ -46,6 +46,7 @@ This project focuses on understanding time-dependent patterns, engineering meani
 Developed an initial forecasting model using XGBoost to establish a performance benchmark.
 
 The baseline included:
+
 - Calendar-based features.
 - Store and product family information.
 - Promotion data.
@@ -55,13 +56,13 @@ The baseline included:
 
 Experimented with several feature engineering techniques:
 
-- **Lag Features:** `lag_16`, `lag_30`, and `lag_365`.
-- **Rolling Statistics:** `rolling_mean_16`.
+- **Lag Features:** Historical sales values at different time intervals.
+- **Rolling Statistics:** Rolling averages and standard deviations.
 - **Calendar Features:** Year, month, day, day of week, week of year, and quarter.
 - **Cyclical Encoding:** Sine and cosine transformations for calendar features.
 - **Store Metadata:** Store location and characteristics.
 
-Additional experiments were conducted with longer lag periods, rolling statistics, promotion transformations, oil prices, and transaction-based features.
+Additional experiments were conducted with promotion transformations, oil prices, transaction-based features, and alternative historical windows.
 
 Features were retained or excluded based on their measured impact on validation performance.
 
@@ -89,21 +90,37 @@ The optimization process explored parameters such as:
 
 Early stopping was also used during model training.
 
-## Results
+## Model Evaluation & Results
 
-| Model / Experiment | Validation RMSLE |
+Model performance was evaluated using the Root Mean Squared Logarithmic Error (RMSLE).
+
+The following results were obtained during the experiments conducted in this project:
+
+| Experiment | Validation RMSLE |
 |---|---:|
-| Initial Baseline | 0.55231 |
-| Baseline + Store State | 0.51674 |
-| Optimized XGBoost + Optuna | **0.46743** |
+| Initial Baseline Model | 0.55231 |
+| Baseline + Store State Feature | 0.51674 |
+| Optimized XGBoost using Optuna | **0.46011** |
 
-The optimized model improved the validation RMSLE compared with the initial baseline.
+The optimized model achieved a lower validation error compared with the initial baseline through feature evaluation and hyperparameter optimization.
 
-**Important:** The Optuna optimization and final model evaluation used the same validation period. Therefore, the reported result should not be interpreted as an independent estimate of generalization performance.
+### Kaggle Public Leaderboard
+
+The generated predictions were submitted to the Kaggle competition, resulting in the following Public Score:
+
+| Evaluation | RMSLE |
+|---|---:|
+| Kaggle Public Score | 0.51750 |
+
+The Public Score differs from the local validation result. This is expected because the two scores are calculated using different data subsets.
+
+This difference may reflect changes in data distribution, temporal patterns, and the model's ability to generalize to unseen data.
+
+**Note:** These values represent the results obtained during the current experiments and are not fixed or guaranteed results. They may change with future modifications to the dataset, feature engineering process, validation strategy, model configuration, hyperparameters, or training process. Re-running the experiments may also produce different results.
 
 ## Final Feature Set
 
-The final model used 20 features:
+The optimized model used the following 20 features:
 
 ```python
 final_features = [
@@ -132,22 +149,18 @@ final_features = [
 
 ## Competition Submission
 
-The optimized model was used to generate predictions for the competition test dataset.
+The optimized XGBoost model was used to generate predictions for the competition test dataset.
 
-The final submission file was prepared in the required Kaggle format:
+The predictions were exported into the required Kaggle submission format:
 
-```text
-submission.csv
-```
+`submission.csv`
 
-Expected structure:
+- **Submission Status:** Successfully submitted.
+- **Number of Predictions:** 28,512.
+- **Evaluation Metric:** RMSLE.
+- **Public Score:** 0.51750 (at the time of submission).
 
-| Column | Description |
-|---|---|
-| `id` | Unique row identifier |
-| `sales` | Predicted sales value |
-
-The submission contains 28,512 predictions.
+The Public Leaderboard score provides an additional evaluation of the model on unseen competition data and should be considered alongside the local validation results.
 
 ## Key Learnings
 
@@ -160,6 +173,7 @@ Throughout this project, I gained practical experience in:
 - Analyzing prediction errors and model behavior.
 - Optimizing XGBoost models using Optuna.
 - Understanding the importance of time-based validation and data leakage prevention.
+- Evaluating the difference between local validation performance and public leaderboard performance.
 - Following an end-to-end Kaggle competition workflow.
 
 ## Future Improvements
@@ -167,16 +181,16 @@ Throughout this project, I gained practical experience in:
 Potential directions for further development include:
 
 - Independent time-based validation.
-- Spatial and temporal feature exploration.
+- Further investigation of temporal patterns.
 - Experimenting with alternative forecasting models.
 - Exploring ensemble techniques.
-- Further investigating generalization across stores and product families.
+- Improving generalization across stores and product families.
 
 ## Project Status
 
-**Core modeling and submission preparation completed.**
+**Core modeling, optimization, and competition submission completed.**
 
-This project is part of my ongoing practical learning journey in Machine Learning and Data Science.
+Further experiments and improvements may be introduced as part of the ongoing learning process.
 
 ---
 
